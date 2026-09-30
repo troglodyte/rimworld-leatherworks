@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <LW_StudMetal>Studs: {0}</LW_StudMetal>
+  <LW_StudBonus>{0} studs: {1}</LW_StudBonus>
+  <LW_PaddedLeather>Padding: {0}</LW_PaddedLeather>
+  <LW_PaddedBonus>{0} padding: {1}</LW_PaddedBonus>
+</LanguageData>
