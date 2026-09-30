@@ -12,4 +12,13 @@
       </li>
     </value>
   </Operation>
+
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/StatDef[defName="RangedWeapon_DamageMultiplier" or defName="MeleeWeapon_DamageMultiplier"]/parts</xpath>
+    <value>
+      <li Class="Leatherworks.StatPart_SlingLeatherDamage">
+        <priority>50</priority>
+      </li>
+    </value>
+  </Operation>
 </Patch>

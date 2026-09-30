@@ -9,9 +9,9 @@
   <loadAfter>
     <li>Ludeon.RimWorld</li>
   </loadAfter>
-  <description>Leather and padded armor for early-game and tribal colonies.
+  <description>Leather and padded armor and neolithic weaponry for early-game and tribal colonies.
 
-Adds a jerkin, cap and greaves in plain leather, studded leather, and padded variants. Protection scales with the fabric and leather used; studded pieces gain protection from metal studs, while padded pieces combine fabric with leather padding for extra blunt resistance and cold insulation.
+Adds a jerkin, cap and greaves in plain leather, studded leather, and padded variants, as well as a leather sling for hurling stones with blunt damage. Protection scales with the fabric and leather used; studded pieces gain protection from metal studs, while padded pieces combine fabric with leather padding for extra blunt resistance and cold insulation.
 
 No DLC required.</description>
 </ModMetaData>

@@ -13,6 +13,7 @@ namespace Leatherworks.Tests
 
         private string modRoot;
         private List<XElement> thingDefs;
+        private List<XElement> weaponDefs;
         private List<XElement> recipeDefs;
 
         [SetUp]
@@ -28,6 +29,7 @@ namespace Leatherworks.Tests
             modRoot = dir!.FullName;
 
             thingDefs = LoadDefs("ThingDefs/Apparel_Leatherworks.xml", "ThingDef");
+            weaponDefs = LoadDefs("ThingDefs/Weapons_Leatherworks.xml", "ThingDef");
             recipeDefs = LoadDefs("RecipeDefs/Recipes_Leatherworks.xml", "RecipeDef");
         }
 
@@ -48,11 +50,43 @@ namespace Leatherworks.Tests
         [Test]
         public void AllDefNames_UseLwPrefix()
         {
-            foreach (var def in thingDefs.Concat(recipeDefs))
+            foreach (var def in thingDefs.Concat(recipeDefs).Concat(weaponDefs))
             {
                 string name = def.Element("defName")?.Value ?? def.Attribute("Name")?.Value;
                 Assert.That(name, Does.StartWith("LW_"), $"{name} must use the LW_ prefix");
             }
+        }
+
+        [Test]
+        public void LeatherSling_IsNeolithicWeapon_UsesLeatherStuff_AndFiresBluntStone()
+        {
+            XElement sling = Named(weaponDefs, "LW_Weapon_LeatherSling");
+            Assert.That(sling.Attribute("ParentName")?.Value, Is.EqualTo("BaseWeaponNeolithic"));
+            
+            var stuffCats = sling.Element("stuffCategories")?.Elements("li").Select(e => e.Value).ToList();
+            Assert.That(stuffCats, Does.Contain("Leathery"), "Sling must be made of leather");
+
+            var weaponTags = sling.Element("weaponTags")?.Elements("li").Select(e => e.Value).ToList();
+            Assert.That(weaponTags, Does.Contain("NeolithicRangedBasic"), "Sling must have NeolithicRangedBasic tag for tribal pawns");
+
+            var recipeUsers = sling.Element("recipeMaker")?.Element("recipeUsers")?.Elements("li").Select(e => e.Value).ToList();
+            Assert.That(recipeUsers, Does.Contain("CraftingSpot"), "Sling must be craftable at crafting spot");
+
+            string projectileName = sling.Element("verbs")?.Element("li")?.Element("defaultProjectile")?.Value;
+            Assert.That(projectileName, Is.EqualTo("LW_Bullet_SlingStone"));
+
+            XElement projectile = Named(weaponDefs, "LW_Bullet_SlingStone");
+            Assert.That(projectile.Attribute("ParentName")?.Value, Is.EqualTo("BaseProjectileNeolithic"));
+            Assert.That(projectile.Element("projectile")?.Element("damageDef")?.Value, Is.EqualTo("Blunt"), "Projectile must deal blunt damage");
+
+            // Textures exist on disk
+            string weaponTex = sling.Element("graphicData")?.Element("texPath")?.Value;
+            Assert.That(weaponTex, Is.Not.Null);
+            Assert.That(File.Exists(Path.Combine(modRoot, "Textures", weaponTex + ".png")), Is.True, $"Missing weapon texture: {weaponTex}");
+
+            string projTex = projectile.Element("graphicData")?.Element("texPath")?.Value;
+            Assert.That(projTex, Is.Not.Null);
+            Assert.That(File.Exists(Path.Combine(modRoot, "Textures", projTex + ".png")), Is.True, $"Missing projectile texture: {projTex}");
         }
 
         [TestCaseSource(nameof(Pieces))]
@@ -110,6 +144,7 @@ namespace Leatherworks.Tests
 
         [TestCase("Leatherworks.StatPart_StuddedMetal")]
         [TestCase("Leatherworks.StatPart_PaddedLeather")]
+        [TestCase("Leatherworks.StatPart_SlingLeatherDamage")]
         public void StatPartPatch_SitsBetweenStuffAndQuality(string className)
         {
             string path = Path.Combine(modRoot, "Patches", "StatParts_Leatherworks.xml");

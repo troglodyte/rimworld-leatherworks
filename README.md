@@ -1,6 +1,6 @@
 # Leatherworks
 
-Standalone RimWorld 1.6 mod (core only). Adds a jerkin, cap and greaves in plain leather, studded leather, and padded variants.
+Standalone RimWorld 1.6 mod (core only). Adds a jerkin, cap and greaves in plain leather, studded leather, and padded variants, plus a neolithic leather sling for hurling stones.
 Design: `docs/superpowers/specs/2026-09-29-leatherworks-design.md`.
 
 ## Build and test
@@ -24,6 +24,7 @@ cd ../Leatherworks.Tests && dotnet test
 - `Patch_MakeRecipeProducts` stores the secondary metal / leather on the respective item comp.
 - Plain and padded pieces use apparel tag `Neolithic` (tribals). Studded pieces use `IndustrialBasic`
   (outlanders, pirates, drifters). Core has no medieval pawn kinds.
+- The leather sling scales its damage with the toughness (`StuffPower_Armor_Sharp`) of the leather used via `StatPart_SlingLeatherDamage` (plain leather baseline 1.0x / 9 dmg, light leathers ~0.78x–0.83x / 7–8 dmg, bear/elephant ~1.19x–1.30x / 11–12 dmg, thrumbo ~1.78x / 16 dmg).
 
 ## In-game verification checklist
 
